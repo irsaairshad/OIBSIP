@@ -1,0 +1,724 @@
+/* ================================================
+   TO-DO WEB APP STYLESHEET
+   OASIS INFOBYTE - Web Development L2, Task 3
+   ================================================ */
+
+:root {
+    /* Colors */
+    --primary: #3498db;
+    --primary-dark: #2980b9;
+    --success: #27ae60;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+    --bg-light: #f8f9fa;
+    --bg-dark: #1a1a1a;
+    --text-dark: #2c3e50;
+    --text-light: #ecf0f1;
+    --border-color: #bdc3c7;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Fonts */
+    --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-sm: 0.9rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.75rem;
+}
+
+/* ================================================
+   GLOBAL STYLES
+   ================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+    }
+}
+
+/* ================================================
+   LAYOUT
+   ================================================ */
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ================================================
+   HEADER
+   ================================================ */
+
+.header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg) 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.app-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 700;
+}
+
+.app-subtitle {
+    font-size: var(--font-size-sm);
+    opacity: 0.9;
+}
+
+/* ================================================
+   MAIN CONTENT
+   ================================================ */
+
+.main-content {
+    flex: 1;
+}
+
+/* ================================================
+   INPUT SECTION
+   ================================================ */
+
+.input-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.input-container {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.task-input {
+    flex: 1;
+    min-width: 200px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-md);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: white;
+    color: var(--text-dark);
+}
+
+.task-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.task-input::placeholder {
+    color: #999;
+}
+
+/* Dark mode for input */
+@media (prefers-color-scheme: dark) {
+    .task-input {
+        background-color: #2a2a2a;
+        color: var(--text-light);
+        border-color: #444;
+    }
+}
+
+.add-task-btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.add-task-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.add-task-btn:active {
+    transform: translateY(0);
+}
+
+/* ================================================
+   TASKS CONTAINER
+   ================================================ */
+
+.tasks-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.tasks-section {
+    background: white;
+    border-radius: 12px;
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .tasks-section {
+        background-color: #252525;
+    }
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.section-header h2 {
+    font-size: var(--font-size-lg);
+    color: var(--text-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+    .section-header h2 {
+        color: var(--text-light);
+    }
+}
+
+.task-count {
+    display: inline-block;
+    background-color: var(--primary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+}
+
+/* ================================================
+   TASKS LIST
+   ================================================ */
+
+.tasks-list {
+    max-height: 600px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.tasks-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tasks-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.tasks-list::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+.tasks-list::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* ================================================
+   TASK ITEM
+   ================================================ */
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    background-color: var(--bg-light);
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .task-item {
+        background-color: #2a2a2a;
+    }
+}
+
+.task-item:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-md);
+}
+
+.task-item.completed {
+    opacity: 0.7;
+    border-left-color: var(--success);
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.task-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex: 1;
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--success);
+}
+
+.task-text {
+    font-size: var(--font-size-md);
+    color: var(--text-dark);
+    word-break: break-word;
+}
+
+@media (prefers-color-scheme: dark) {
+    .task-text {
+        color: var(--text-light);
+    }
+}
+
+.task-timestamp {
+    font-size: var(--font-size-sm);
+    color: #999;
+    margin-left: auto;
+}
+
+/* ================================================
+   TASK ACTIONS
+   ================================================ */
+
+.task-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.btn-edit,
+.btn-delete {
+    padding: 0.4rem 0.8rem;
+    font-size: var(--font-size-sm);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-edit {
+    background-color: var(--warning);
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: darken(var(--warning), 10%);
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    background-color: var(--danger);
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: darken(var(--danger), 10%);
+    transform: scale(1.05);
+}
+
+/* ================================================
+   EMPTY STATE
+   ================================================ */
+
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-lg);
+    color: #999;
+    font-style: italic;
+}
+
+/* ================================================
+   STATS SECTION
+   ================================================ */
+
+.stats-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.stat-card {
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .stat-card {
+        background-color: #252525;
+    }
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-card h3 {
+    font-size: var(--font-size-md);
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+}
+
+@media (prefers-color-scheme: dark) {
+    .stat-card h3 {
+        color: var(--text-light);
+    }
+}
+
+.stat-number {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* ================================================
+   ACTION BUTTONS
+   ================================================ */
+
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 150px;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #7f8c8d;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: darken(var(--danger), 10%);
+    transform: translateY(-2px);
+}
+
+/* ================================================
+   MODAL
+   ================================================ */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    max-width: 500px;
+    width: 90%;
+    animation: modalSlide 0.3s ease-out;
+}
+
+@media (prefers-color-scheme: dark) {
+    .modal-content {
+        background-color: #252525;
+    }
+}
+
+@keyframes modalSlide {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: var(--spacing-md);
+}
+
+.modal-header h2 {
+    color: var(--text-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+    .modal-header h2 {
+        color: var(--text-light);
+    }
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-dark);
+    transition: transform 0.2s ease;
+}
+
+.modal-close:hover {
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-footer {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+}
+
+/* ================================================
+   TOAST NOTIFICATION
+   ================================================ */
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--success);
+    color: white;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    z-index: 2000;
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ================================================
+   FOOTER
+   ================================================ */
+
+.footer {
+    text-align: center;
+    padding: var(--spacing-lg) 0;
+    border-top: 1px solid var(--border-color);
+    color: #999;
+    font-size: var(--font-size-sm);
+}
+
+.footer p {
+    margin-bottom: var(--spacing-xs);
+}
+
+/* ================================================
+   RESPONSIVE DESIGN
+   ================================================ */
+
+@media (max-width: 768px) {
+    .tasks-container {
+        grid-template-columns: 1fr;
+    }
+
+    .input-container {
+        flex-direction: column;
+    }
+
+    .add-task-btn {
+        width: 100%;
+    }
+
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .task-actions {
+        width: 100%;
+        margin-top: var(--spacing-sm);
+    }
+
+    .btn-edit,
+    .btn-delete {
+        flex: 1;
+    }
+
+    .stats-section {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: var(--spacing-sm);
+    }
+
+    .header {
+        margin-bottom: var(--spacing-lg);
+        padding: var(--spacing-md);
+    }
+
+    .app-title {
+        font-size: var(--font-size-lg);
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+
+    .task-timestamp {
+        display: none;
+    }
+}
+
+/* ================================================
+   ACCESSIBILITY
+   ================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus styles for keyboard navigation */
+button:focus,
+input:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
