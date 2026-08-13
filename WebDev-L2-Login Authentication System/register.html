@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Login Authentication System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <h1>Create Account</h1>
+      <p class="subtitle">Join us today</p>
+
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            placeholder="Enter your username" 
+            required
+          >
+          <span class="error-message" id="usernameError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            placeholder="Enter your email" 
+            required
+          >
+          <span class="error-message" id="emailError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Minimum 8 characters, at least 1 number" 
+            required
+          >
+          <span class="error-message" id="passwordError"></span>
+          <div class="password-requirements">
+            <small>✓ At least 8 characters</small>
+            <small>✓ At least 1 number</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            name="confirmPassword" 
+            placeholder="Re-enter your password" 
+            required
+          >
+          <span class="error-message" id="confirmPasswordError"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+        <span class="success-message" id="successMessage"></span>
+      </form>
+
+      <div class="form-footer">
+        <p>Already have an account? <a href="/login">Login here</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const successMessage = document.getElementById('successMessage');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      // Client-side validation
+      let isValid = true;
+
+      if (username.length < 3) {
+        showError('usernameError', 'Username must be at least 3 characters');
+        isValid = false;
+      }
+
+      if (!validateEmail(email)) {
+        showError('emailError', 'Please enter a valid email address');
+        isValid = false;
+      }
+
+      if (password.length < 8) {
+        showError('passwordError', 'Password must be at least 8 characters');
+        isValid = false;
+      }
+
+      if (!/\d/.test(password)) {
+        showError('passwordError', 'Password must contain at least 1 number');
+        isValid = false;
+      }
+
+      if (password !== confirmPassword) {
+        showError('confirmPasswordError', 'Passwords do not match');
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, email, password, confirmPassword })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          successMessage.textContent = data.message + ' Redirecting to login...';
+          successMessage.style.color = '#27ae60';
+          successMessage.style.display = 'block';
+          form.reset();
+          
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 2000);
+        } else {
+          if (data.error.includes('email')) {
+            showError('emailError', data.error);
+          } else if (data.error.includes('Username')) {
+            showError('usernameError', data.error);
+          } else if (data.error.includes('Password')) {
+            showError('passwordError', data.error);
+          } else {
+            showError('usernameError', data.error);
+          }
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showError('usernameError', 'An error occurred. Please try again.');
+      }
+    });
+
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function showError(elementId, message) {
+      const element = document.getElementById(elementId);
+      element.textContent = message;
+      element.style.display = 'block';
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.textContent = '';
+        el.style.display = 'none';
+      });
+      successMessage.textContent = '';
+      successMessage.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

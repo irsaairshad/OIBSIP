@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Login Authentication System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <h2 class="navbar-title">Dashboard</h2>
+      <button id="logoutBtn" class="btn btn-logout">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="dashboard-container">
+      <div class="welcome-card">
+        <h1>Welcome, <span id="username">User</span>!</h1>
+        <p>You have successfully logged in to your account.</p>
+      </div>
+
+      <div class="user-info-card">
+        <h2>Account Information</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Username</label>
+            <p id="userUsername">-</p>
+          </div>
+          <div class="info-item">
+            <label>Email</label>
+            <p id="userEmail">-</p>
+          </div>
+          <div class="info-item">
+            <label>User ID</label>
+            <p id="userId">-</p>
+          </div>
+          <div class="info-item">
+            <label>Login Time</label>
+            <p id="loginTime">-</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="features-card">
+        <h2>Dashboard Features</h2>
+        <ul>
+          <li>✓ Secure authentication system</li>
+          <li>✓ Password hashing with SHA-256</li>
+          <li>✓ Session management</li>
+          <li>✓ Protected dashboard access</li>
+          <li>✓ Form validation</li>
+          <li>✓ Logout functionality</li>
+        </ul>
+      </div>
+
+      <div class="logout-section">
+        <p>Ready to leave?</p>
+        <button id="logoutBtnAlt" class="btn btn-danger">Logout from Account</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check if user is authenticated
+    async function checkAuthentication() {
+      try {
+        const response = await fetch('/api/check-auth');
+        const data = await response.json();
+
+        if (!data.authenticated) {
+          window.location.href = '/login';
+          return;
+        }
+
+        // Load user information
+        loadUserInfo();
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+        window.location.href = '/login';
+      }
+    }
+
+    // Load user information
+    async function loadUserInfo() {
+      try {
+        const response = await fetch('/api/user');
+        const data = await response.json();
+
+        if (response.ok) {
+          document.getElementById('username').textContent = data.username;
+          document.getElementById('userUsername').textContent = data.username;
+          document.getElementById('userEmail').textContent = data.email;
+          document.getElementById('userId').textContent = data.userId;
+          
+          // Set login time to current time
+          const now = new Date();
+          document.getElementById('loginTime').textContent = now.toLocaleString();
+        } else {
+          console.error('Error loading user info:', data.error);
+          window.location.href = '/login';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        window.location.href = '/login';
+      }
+    }
+
+    // Handle logout
+    async function logout() {
+      try {
+        const response = await fetch('/api/logout', {
+          method: 'POST'
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Redirect to login
+          window.location.href = data.redirect;
+        } else {
+          alert('Error logging out. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while logging out.');
+      }
+    }
+
+    // Add logout button event listeners
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+    document.getElementById('logoutBtnAlt').addEventListener('click', logout);
+
+    // Check authentication on page load
+    checkAuthentication();
+  </script>
+</body>
+</html>
